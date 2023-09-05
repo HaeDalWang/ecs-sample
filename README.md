@@ -4,10 +4,10 @@ Terraform으로 fargate 기반 ECS 생성
 ## 사용한 모듈
 aws 공식 vpc
 - https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
-- 
+  
 aws 공식 보안그룹
 - https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/
-- 
+  
 aws 공식 ALB
 - https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/
 
