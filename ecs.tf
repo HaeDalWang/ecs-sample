@@ -1,6 +1,5 @@
 #---------------------------------------------------------------
 # ECS 클러스터 생성
-# https://registry.terraform.io/modules/terraform-aws-modules/ecs/aws/5.2.2?utm_content=documentLink&utm_medium=Visual+Studio+Code&utm_source=terraform-ls
 #---------------------------------------------------------------
 
 resource "aws_ecs_cluster" "example" {
