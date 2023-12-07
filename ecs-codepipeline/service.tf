@@ -1,18 +1,20 @@
-# #---------------------------------------------------------------
-# # ECS 서비스 생성 
-# #---------------------------------------------------------------
+#---------------------------------------------------------------
+# ECS 서비스 생성 
+#---------------------------------------------------------------
 
 # 작업 정의 생성
 resource "aws_ecs_task_definition" "example" {
-  family                   = "${var.task-name}"
+  family                   = "${var.definition-name}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 2048
   memory                   = 4096
+  execution_role_arn = aws_iam_role.task_role.arn
+  
   container_definitions = jsonencode([
     {
       name      = "${var.container-name}"
-      image     = "public.ecr.aws/aws-containers/ecsdemo-frontend:776fd50" // * 
+      image     = "${aws_ecr_repository.example-repo.repository_url}:latest"
       cpu       = 512
       memory    = 1024
       essential = true
@@ -69,5 +71,9 @@ resource "aws_ecs_service" "example" {
     target_group_arn = element(module.alb.target_group_arns, 0)
     container_name   = var.container-name
     container_port   = var.container-port
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
   }
 }

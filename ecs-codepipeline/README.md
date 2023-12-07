@@ -23,3 +23,6 @@ aws 공식 ALB
 새로운 CodeFamily 스택 생성
 - CodeCommit(예시 소스) + Codebuild + CodeDeploy + Codepipeline 
 
+## 삭제시 주의사항
+S3 버킷에 아티팩트가 남아있어 버킷삭제가 되지 않습니다
+- Terraform destoy전 S3 버킷안 오브젝트를 전부 삭제해 주세요
