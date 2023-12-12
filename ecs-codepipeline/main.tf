@@ -22,6 +22,5 @@ locals {
   tags = {
     Terraform = "true"
   }
-
-
 }
+data "aws_caller_identity" "current" {}

@@ -4,13 +4,13 @@
 
 # 작업 정의 생성
 resource "aws_ecs_task_definition" "example" {
-  family                   = "${var.definition-name}"
+  family                   = var.definition-name
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 2048
   memory                   = 4096
-  execution_role_arn = aws_iam_role.task_role.arn
-  
+  execution_role_arn       = aws_iam_role.task_role.arn
+
   container_definitions = jsonencode([
     {
       name      = "${var.container-name}"
@@ -41,17 +41,17 @@ resource "aws_security_group" "demo" {
   description = "Allow ALB inbound traffic"
   vpc_id      = module.vpc.vpc_id
   ingress {
-    description      = "http from alb"
-    from_port        = var.container-port
-    to_port          = var.container-port
-    protocol         = "tcp"
-    security_groups  = ["${module.alb_sg.security_group_id}"]
+    description     = "http from alb"
+    from_port       = var.container-port
+    to_port         = var.container-port
+    protocol        = "tcp"
+    security_groups = ["${module.alb_sg.security_group_id}"]
   }
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_ecs_service" "example" {
   desired_count   = 3
 
   network_configuration {
-    subnets         = module.vpc.private_subnets 
+    subnets         = module.vpc.private_subnets
     security_groups = ["${aws_security_group.demo.id}"]
   }
 

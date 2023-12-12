@@ -21,6 +21,7 @@ aws 공식 ALB
     + 서비스를 배포 합니다.
 
 새로운 CodeFamily 스택 생성
+- CodePipeline V1을 기반한 표준 배포 구성
 - CodeCommit(예시 소스) + Codebuild + CodeDeploy + Codepipeline 
 
 ## 삭제시 주의사항

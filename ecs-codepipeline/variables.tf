@@ -26,3 +26,9 @@ variable "codecommit-repo-name" {
   type    = string
   default = "example-codecommit-repo"
 }
+
+## CodeBuild 프로젝트 이름
+variable "codebuild-project-name" {
+  type    = string
+  default = "example-project"
+}

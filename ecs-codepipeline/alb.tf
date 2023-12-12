@@ -10,7 +10,7 @@ module "alb_sg" {
   description = "${var.container-name} Service security group"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_rules       = ["http-80-tcp","https-443-tcp"]
+  ingress_rules       = ["http-80-tcp", "https-443-tcp"]
   ingress_cidr_blocks = ["0.0.0.0/0"]
 
   egress_rules = ["all-all"]
@@ -40,11 +40,17 @@ module "alb" {
 
   target_groups = [
     {
-      name             = "${var.container-name}"
+      name             = "${var.container-name}-blue"
       backend_protocol = "HTTP"
       backend_port     = var.container-port
       target_type      = "ip"
     },
+    {
+      name             = "${var.container-name}-green"
+      backend_protocol = "HTTP"
+      backend_port     = var.container-port
+      target_type      = "ip"
+    }
   ]
 
   tags = local.tags
