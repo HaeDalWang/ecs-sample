@@ -3,13 +3,13 @@ Resources:
 - TargetService:
     Type: AWS::ECS::Service
     Properties:
-      TaskDefinition: "arn:aws:ecs:ap-northeast-2:863422182520:task-definition/php-ecs:2"
+      TaskDefinition: "HERE" # taskdef-arn
       LoadBalancerInfo:
-        ContainerName: "test" # Edit here
-        ContainerPort: 80
+        ContainerName: "HERE" # container-name
+        ContainerPort: HERE # container-port
       PlatformVersion: "LATEST"
       NetworkConfiguration:
         AwsvpcConfiguration:
-          Subnets: ["subnet-05b6978d3c65e0393", "subnet-0b0de558fc6d98b63", "	subnet-07007e7e2cf6ca831","subnet-002b45361e56f3540"] # Edit here
-          SecurityGroups: ["sg-0601b30ed5917cbf8"]  # Edit here
+          Subnets: ["HERE", "HERE", "HERE"] # network-info subnetsID
+          SecurityGroups: ["HERE"]  # network-info SecurityGroupID
           AssignPublicIp: "DISABLED"

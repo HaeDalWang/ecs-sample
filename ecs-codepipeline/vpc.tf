@@ -6,7 +6,7 @@
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.1.1"
+  version = "5.4.0"
   name    = local.cluster_name
 
   # 가용 영역 및 서브넷 cidr

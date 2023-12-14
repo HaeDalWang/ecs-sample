@@ -1,14 +1,14 @@
-# ecs-sample
-Terraform으로 fargate 기반 ECS 생성
+# ecs-codepipeline
+Terraform으로 ECS CLuster + Codepipeline 통한 배포를 구성합니다.
 
 ## 사용한 모듈
-aws 공식 vpc
+aws vpc
 - https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
   
-aws 공식 보안그룹
+aws 보안그룹
 - https://registry.terraform.io/modules/terraform-aws-modules/security-group/aws/
   
-aws 공식 ALB
+aws ALB
 - https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/
 
 ## 구성된 사항
@@ -17,8 +17,7 @@ aws 공식 ALB
 - 3개의 서브넷
 
 새로운 ECS 클러스터
-- Fargate 기반 컴퓨팅 구성
-    + 서비스를 배포 합니다.
+- Fargate 기반 컴퓨팅 구성, 서비스를 배포 합니다.
 
 새로운 CodeFamily 스택 생성
 - CodePipeline V1을 기반한 표준 배포 구성
