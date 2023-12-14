@@ -2,22 +2,22 @@
 # Code 시리즈 리소스 생성
 #---------------------------------------------------------------
 
+#---------------------------------------------------------------
 # CodeCommit 레포 생성
+#---------------------------------------------------------------
 resource "aws_codecommit_repository" "my_repo" {
   repository_name = var.codecommit-repo-name
-  default_branch  = "main"
+  default_branch  = "master"
 }
 
 # 빌드시 아티팩트를 저장할 S3 버킷 생성
 resource "aws_s3_bucket" "s3_bucket" {
   bucket_prefix = "ecs-codepipeline-example-"
 }
-# resource "aws_s3_bucket_acl" "s3_bucket_acl" {
-#   bucket = aws_s3_bucket.s3_bucket.id
-#   acl    = "private"
-# }
 
+#---------------------------------------------------------------
 # Codebuild 프로젝트 생성
+#---------------------------------------------------------------
 resource "aws_codebuild_project" "example" {
   name = var.codebuild-project-name
 
@@ -49,7 +49,9 @@ resource "aws_codebuild_project" "example" {
   source_version = "main"
 }
 
+#---------------------------------------------------------------
 # CodeDeploy Application
+#---------------------------------------------------------------
 resource "aws_codedeploy_app" "example" {
   compute_platform = "ECS"
   name             = "ecs-example"
@@ -100,7 +102,9 @@ resource "aws_codedeploy_deployment_group" "example" {
   }
 }
 
+#---------------------------------------------------------------
 # CodePipeline 
+#---------------------------------------------------------------
 resource "aws_codepipeline" "codepipeline" {
   name     = "example-pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
@@ -125,7 +129,7 @@ resource "aws_codepipeline" "codepipeline" {
 
       configuration = {
         RepositoryName       = aws_codecommit_repository.my_repo.repository_name
-        BranchName           = "main"
+        BranchName           = "master"
         PollForSourceChanges = false
         OutputArtifactFormat = "CODE_ZIP"
       }
@@ -171,4 +175,42 @@ resource "aws_codepipeline" "codepipeline" {
       }
     }
   }
+}
+
+## CodePipeline이 CodeCommit을 트리거할 EventBridge 규칙 생성
+resource "aws_cloudwatch_event_rule" "codepipeline_event" {
+  name        = "invoke-${aws_codepipeline.codepipeline.name}"
+  description = "Invokes pipeline when there is a new CodeCommit repo commit"
+  event_pattern = jsonencode({
+
+    "source" : [
+      "aws.codecommit"
+    ],
+    "detail-type" : [
+      "CodeCommit Repository State Change"
+    ],
+    "resources" : [
+      "${aws_codecommit_repository.my_repo.arn}"
+    ],
+    "detail" : {
+      "event" : [
+        "referenceCreated",
+        "referenceUpdated"
+      ],
+      "referenceType" : [
+        "branch"
+      ],
+      "referenceName" : [
+        "master",
+      ]
+    }
+
+  })
+}
+# 위 이벤트 작동 시 Codepipeline 시작
+resource "aws_cloudwatch_event_target" "codepipeline" {
+  rule      = aws_cloudwatch_event_rule.codepipeline_event.name
+  target_id = "invoke-${aws_codepipeline.codepipeline.name}"
+  arn       = aws_codepipeline.codepipeline.arn
+  role_arn  = aws_iam_role.codepipeline_event_role.arn
 }

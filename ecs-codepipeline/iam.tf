@@ -324,3 +324,38 @@ resource "aws_iam_role" "codepipeline_role" {
     })
   }
 }
+
+## CodePipeline-Event Role
+resource "aws_iam_role" "codepipeline_event_role" {
+  name = "codepipeline-event-role-example"
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "events.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+  inline_policy {
+    name = "start-pipeline-execution-ap-northeast-2-${aws_codepipeline.codepipeline.name}"
+
+    policy = jsonencode({
+      "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codepipeline:StartPipelineExecution"
+            ],
+            "Resource": [
+                "${aws_codepipeline.codepipeline.arn}"
+            ]
+        }
+      ]
+    })
+  }
+}
