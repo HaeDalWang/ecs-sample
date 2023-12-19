@@ -25,4 +25,6 @@ aws ALB
 
 ## 삭제시 주의사항
 S3 버킷에 아티팩트가 남아있어 버킷삭제가 되지 않습니다
-- Terraform destoy전 S3 버킷안 오브젝트를 전부 삭제해 주세요
+- Terraform destroy S3 버킷안 오브젝트를 전부 삭제해 주세요
+ECR 레포지토리 안에 컨테이너 이미지가 남아있어 삭제가 되지 않습니다.
+- Terraform Destroy전 ECR 레포안 컨테이너 이미지를 전부 삭제해 주세요

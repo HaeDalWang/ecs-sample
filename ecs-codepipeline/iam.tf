@@ -62,7 +62,8 @@ resource "aws_iam_role_policy" "test_policy" {
       {
         "Effect" : "Allow",
         "Resource" : [
-          "arn:aws:s3:::codepipeline-ap-northeast-2-*"
+          "${aws_s3_bucket.s3_bucket.arn}",
+          "${aws_s3_bucket.s3_bucket.arn}/*"
         ],
         "Action" : [
           "s3:PutObject",
@@ -79,18 +80,6 @@ resource "aws_iam_role_policy" "test_policy" {
         ],
         "Action" : [
           "codecommit:GitPull"
-        ]
-      },
-      {
-        "Effect" : "Allow",
-        "Resource" : [
-          "${aws_s3_bucket.s3_bucket.arn}",
-          "${aws_s3_bucket.s3_bucket.arn}/*"
-        ],
-        "Action" : [
-          "s3:PutObject",
-          "s3:GetBucketAcl",
-          "s3:GetBucketLocation"
         ]
       },
       {
@@ -345,15 +334,15 @@ resource "aws_iam_role" "codepipeline_event_role" {
     name = "start-pipeline-execution-ap-northeast-2-${aws_codepipeline.codepipeline.name}"
 
     policy = jsonencode({
-      "Statement": [
+      "Statement" : [
         {
-            "Effect": "Allow",
-            "Action": [
-                "codepipeline:StartPipelineExecution"
-            ],
-            "Resource": [
-                "${aws_codepipeline.codepipeline.arn}"
-            ]
+          "Effect" : "Allow",
+          "Action" : [
+            "codepipeline:StartPipelineExecution"
+          ],
+          "Resource" : [
+            "${aws_codepipeline.codepipeline.arn}"
+          ]
         }
       ]
     })

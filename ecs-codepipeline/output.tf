@@ -2,7 +2,7 @@
 ## ECR 레포 주소
 output "ecr-repo" {
   description = "ECR Repository 주소"
-  value       = element(split("/","${aws_ecr_repository.example-repo.repository_url}"),0)
+  value       = element(split("/", "${aws_ecr_repository.example-repo.repository_url}"), 0)
 }
 ## ECR 레포 URI
 output "ecr-repo-uri" {
@@ -21,7 +21,7 @@ output "taskdef-arn" {
 ## Contianer 포트
 output "container-name-port" {
   description = "Container 이름/port"
-  value       = {
+  value = {
     name = var.container-name
     port = var.container-port
   }
@@ -31,8 +31,8 @@ output "container-name-port" {
 ## SG ID
 output "network-info" {
   description = "VPC Subnet and SecurityGroup"
-  value       = {
-    SubnetsID = module.vpc.private_subnets
+  value = {
+    SubnetsID       = module.vpc.private_subnets
     SecurityGroupID = aws_security_group.demo.id
   }
 }
