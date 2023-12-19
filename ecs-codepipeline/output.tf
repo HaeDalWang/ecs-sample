@@ -42,3 +42,9 @@ output "codecommit-url" {
   description = "CodeCommit Repository URL"
   value       = aws_codecommit_repository.my_repo.clone_url_http
 }
+
+## ApplicaitonLoadbalancer export URL
+output "alb-export-url" {
+  description = "alb export url"
+  value       = module.alb.lb_dns_name
+}
